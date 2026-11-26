@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Payment{% endblock %}
+{% block content %}
+<section class="page-banner">
+  <div class="container">
+    <span class="tag">Payment page</span>
+    <h1>Complete your booking payment</h1>
+    <p>{{ booking.title }} · {{ booking.destination }} · {{ booking.travelers }} travelers</p>
+  </div>
+</section>
+
+<section class="section container payment-layout">
+  <div class="panel">
+    <h2>Booking Summary</h2>
+    <div class="summary-list">
+      <div><span>Package</span><strong>{{ booking.title }}</strong></div>
+      <div><span>Travel Date</span><strong>{{ booking.travel_date }}</strong></div>
+      <div><span>Travelers</span><strong>{{ booking.travelers }}</strong></div>
+      <div><span>Total Amount</span><strong>{{ booking.total_amount|currency }}</strong></div>
+      <div><span>Status</span><strong>{{ booking.status }}</strong></div>
+    </div>
+  </div>
+
+  <div class="panel payment-options">
+    <h2>Choose Payment Method</h2>
+
+    <div class="payment-card">
+      <h3>Khalti Payment</h3>
+      <p>{% if khalti_configured %}Live key added. This payment method is ready for online flow.{% else %}Demo mode is active. It will still complete successfully for project demonstration.{% endif %}</p>
+      <form method="POST" action="{{ url_for('pay_khalti') }}">
+        <input type="hidden" name="booking_id" value="{{ booking.id }}">
+        <button class="btn btn-khalti full" type="submit">Pay with Khalti</button>
+      </form>
+    </div>
+
+    <div class="payment-card">
+      <h3>Mobile Banking</h3>
+      <p>Submit bank name and payment reference. Admin can verify it from the dashboard.</p>
+      <form method="POST" action="{{ url_for('pay_mobile') }}">
+        <input type="hidden" name="booking_id" value="{{ booking.id }}">
+        <div class="form-group">
+          <label>Bank Name</label>
+          <select name="bank_name" required>
+            <option value="">Select bank</option>
+            <option>Global IME Bank</option>
+            <option>Kumari Bank</option>
+            <option>Nabil Bank</option>
+            <option>Nepal SBI Bank</option>
+            <option>NIC Asia</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Reference Number</label>
+          <input type="text" name="reference" required>
+        </div>
+        <button class="btn btn-outline full" type="submit">Submit Mobile Banking Reference</button>
+      </form>
+    </div>
+
+    <div class="payment-card">
+      <h3>Cash on Arrival</h3>
+      <p>Reserve the package now and pay physically when travel starts.</p>
+      <form method="POST" action="{{ url_for('pay_cash') }}">
+        <input type="hidden" name="booking_id" value="{{ booking.id }}">
+        <button class="btn btn-dark full" type="submit">Reserve with Cash Payment</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

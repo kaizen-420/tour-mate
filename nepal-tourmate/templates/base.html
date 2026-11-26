@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}TourMate Nepal{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav-wrap">
+      <a href="{{ url_for('index') }}" class="brand">
+        <span class="brand-badge"><i class="fa-solid fa-mountain-sun"></i></span>
+        <span>
+          <strong>TourMate Nepal</strong>
+          <small>Explore Nepal beautifully</small>
+        </span>
+      </a>
+      <nav class="nav-links">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('packages') }}">Packages</a>
+        <a href="{{ url_for('algorithm_explanation') }}">Algorithms</a>
+        {% if session.get('user_id') %}
+          {% if session.get('role') == 'admin' %}
+            <a class="btn btn-soft" href="{{ url_for('admin_dashboard') }}">Admin Panel</a>
+          {% else %}
+            <a class="btn btn-soft" href="{{ url_for('user_dashboard') }}">My Dashboard</a>
+          {% endif %}
+          <a class="btn btn-dark" href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+          <a href="{{ url_for('login') }}">Login</a>
+          <a class="btn btn-dark" href="{{ url_for('register') }}">Register</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <div class="flash-holder container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  {% block content %}{% endblock %}
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <h3>TourMate Nepal</h3>
+        <p>A simple and beautiful tour and travel management system project for TU BCA final defense.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <a href="{{ url_for('packages') }}">Tour Packages</a>
+        <a href="{{ url_for('algorithm_explanation') }}">Algorithm Details</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>Kathmandu, Nepal</p>
+        <p>+977-9800000000</p>
+        <p>hello@tourmate.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; 2026 TourMate Nepal. TU BCA 6th Semester Project.</div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

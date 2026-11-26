@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Algorithm Explanation{% endblock %}
+{% block content %}
+<section class="page-banner">
+  <div class="container">
+    <span class="tag">Algorithm details</span>
+    <h1>Explanation of the two algorithms</h1>
+    <p>These explanations are written in simple English for TU BCA viva.</p>
+  </div>
+</section>
+
+<section class="section container algorithm-layout">
+  <div class="panel">
+    <h2>Algorithm 1: Tour Recommendation Algorithm</h2>
+    <p>This algorithm suggests tour packages to the user. First, the system checks the booking history of the user. It finds which category the user likes most, such as Adventure, Cultural or Wildlife. Then it also checks the season and the average budget of past bookings.</p>
+    <p>After that, the algorithm compares all available tour packages. If a package matches the user’s preferred category, it gets more score. If the season is similar, it gets extra score. Featured packages also get extra score. If the package price is close to the user’s average budget, the score becomes higher. Finally, the packages are sorted by score and the top results are shown.</p>
+    <div class="highlight-note">
+      <strong>In viva you can say:</strong>
+      <p>“This algorithm recommends the most suitable tour packages by analyzing the user’s previous interest, budget and travel preference.”</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Algorithm 2: Smart Trip Cost Estimation</h2>
+    <p>This algorithm calculates the total estimated cost of a trip. It starts from the base package price. Then it multiplies the base package price by the number of travelers. After that, it adds transport cost, hotel cost and meal cost according to the options selected by the user.</p>
+    <p>If the traveler count is larger, the algorithm also gives a group discount. So the final amount becomes more practical and realistic for group tours. This helps the user know the estimated trip cost before making payment.</p>
+    <div class="highlight-note">
+      <strong>In viva you can say:</strong>
+      <p>“This algorithm automatically estimates the full travel cost based on the selected package, number of travelers, transport, hotel and food plan.”</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

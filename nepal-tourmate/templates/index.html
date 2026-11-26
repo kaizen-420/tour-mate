@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}Home - TourMate Nepal{% endblock %}
+{% block content %}
+<section class="hero-section">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="tag">Tour and Travel Website</span>
+      <h1>Discover Nepal with <span>smarter tour booking</span></h1>
+      <p>TourMate Nepal helps users explore destinations, compare tour packages, estimate travel cost, and book trips using Khalti, mobile banking, or cash on arrival.</p>
+      <div class="hero-actions">
+        <a href="{{ url_for('packages') }}" class="btn btn-dark">Explore Packages</a>
+        <a href="{{ url_for('algorithm_explanation') }}" class="btn btn-outline">View Algorithms</a>
+      </div>
+      <div class="hero-points">
+        <span><i class="fa-solid fa-circle-check"></i> User & Admin Panel</span>
+        <span><i class="fa-solid fa-circle-check"></i> Smart Recommendation</span>
+        <span><i class="fa-solid fa-circle-check"></i> Nepali Payment Options</span>
+      </div>
+    </div>
+    <div class="hero-card scenic-card">
+      <div class="scenic-overlay"></div>
+      <div class="scenic-text">
+        <small>Featured Destination</small>
+        <h3>Pokhara & Himalayan Skyline</h3>
+        <p>Beautiful lakes, mountains and cultural travel in one trip.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="section-head">
+    <div>
+      <span class="tag">Featured tours</span>
+      <h2>Popular travel packages</h2>
+    </div>
+    <a href="{{ url_for('packages') }}" class="text-link">See all packages</a>
+  </div>
+  <div class="card-grid three">
+    {% for item in featured %}
+    <div class="tour-card">
+      <img src="{{ item.image_url }}" alt="{{ item.title }}">
+      <div class="tour-card-body">
+        <div class="pill-row">
+          <span class="pill">{{ item.category }}</span>
+          <span class="pill light">{{ item.days }} days</span>
+        </div>
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.short_description }}</p>
+        <div class="tour-meta">
+          <span><i class="fa-solid fa-location-dot"></i> {{ item.destination }}</span>
+          <strong>{{ item.price|currency }}</strong>
+        </div>
+        <a href="{{ url_for('package_detail', package_id=item.id) }}" class="btn btn-dark full">View Package</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section soft-bg">
+  <div class="container info-grid">
+    <div class="info-box">
+      <i class="fa-solid fa-route"></i>
+      <h3>Algorithm 1</h3>
+      <p>The recommendation algorithm suggests packages based on user booking interest, season, category and average budget.</p>
+    </div>
+    <div class="info-box">
+      <i class="fa-solid fa-calculator"></i>
+      <h3>Algorithm 2</h3>
+      <p>The cost estimator calculates total amount using package fee, transport, hotel, meal plan and group discount.</p>
+    </div>
+    <div class="info-box">
+      <i class="fa-solid fa-wallet"></i>
+      <h3>Payment System</h3>
+      <p>The system supports Khalti-style online payment, mobile banking reference submission and cash on arrival.</p>
+    </div>
+  </div>
+</section>
+
+{% if recommendations %}
+<section class="section container">
+  <div class="section-head">
+    <div>
+      <span class="tag">For you</span>
+      <h2>Recommended tours</h2>
+    </div>
+  </div>
+  <div class="card-grid three">
+    {% for item in recommendations %}
+    <div class="mini-card">
+      <h3>{{ item.title }}</h3>
+      <p>{{ item.destination }} · {{ item.category }}</p>
+      <div class="mini-row"><span>{{ item.days }} days</span><strong>{{ item.price|currency }}</strong></div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="section container">
+  <div class="section-head">
+    <div>
+      <span class="tag">More destinations</span>
+      <h2>Explore different travel moods</h2>
+    </div>
+  </div>
+  <div class="card-grid three compact-grid">
+    {% for item in all_packages %}
+    <a href="{{ url_for('package_detail', package_id=item.id) }}" class="compact-destination">
+      <img src="{{ item.image_url }}" alt="{{ item.destination }}">
+      <div>
+        <h4>{{ item.destination }}</h4>
+        <p>{{ item.category }} · {{ item.days }} days</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

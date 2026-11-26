@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Booking Success{% endblock %}
+{% block content %}
+<section class="success-section">
+  <div class="success-card-large panel">
+    <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+    <h1>Booking Completed Successfully</h1>
+    <p>Your travel package has been saved in the system.</p>
+    <div class="summary-list success-summary">
+      <div><span>Package</span><strong>{{ booking.title }}</strong></div>
+      <div><span>Destination</span><strong>{{ booking.destination }}</strong></div>
+      <div><span>Travel Date</span><strong>{{ booking.travel_date }}</strong></div>
+      <div><span>Total Amount</span><strong>{{ booking.total_amount|currency }}</strong></div>
+      {% if payment %}
+      <div><span>Payment Method</span><strong>{{ payment.method }}</strong></div>
+      <div><span>Transaction ID</span><strong>{{ payment.transaction_id }}</strong></div>
+      {% endif %}
+    </div>
+    <div class="hero-actions center-actions">
+      <a href="{{ url_for('user_dashboard') }}" class="btn btn-dark">Go to Dashboard</a>
+      <a href="{{ url_for('packages') }}" class="btn btn-outline">Book Another Package</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

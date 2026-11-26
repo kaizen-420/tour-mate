@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}{{ package.title }}{% endblock %}
+{% block content %}
+<section class="detail-hero" style="background-image: linear-gradient(rgba(6,26,44,0.55), rgba(6,26,44,0.65)), url('{{ package.image_url }}');">
+  <div class="container detail-hero-inner">
+    <span class="tag">{{ package.category }}</span>
+    <h1>{{ package.title }}</h1>
+    <p>{{ package.short_description }}</p>
+    <div class="detail-highlights">
+      <span><i class="fa-solid fa-location-dot"></i> {{ package.destination }}</span>
+      <span><i class="fa-regular fa-clock"></i> {{ package.days }} days</span>
+      <span><i class="fa-solid fa-person-hiking"></i> {{ package.difficulty }}</span>
+      <span><i class="fa-solid fa-tag"></i> {{ package.price|currency }}</span>
+    </div>
+  </div>
+</section>
+
+<section class="section container detail-grid">
+  <div class="detail-main">
+    <div class="panel">
+      <h2>Package description</h2>
+      <p>{{ package.description }}</p>
+    </div>
+    <div class="panel spec-grid">
+      <div><span>Best Season</span><strong>{{ package.season }}</strong></div>
+      <div><span>Default Transport</span><strong>{{ package.transport }}</strong></div>
+      <div><span>Hotel Type</span><strong>{{ package.hotel_type }}</strong></div>
+      <div><span>Group Size</span><strong>{{ package.max_group_size }} people</strong></div>
+    </div>
+    <div class="panel">
+      <h2>Related packages</h2>
+      <div class="card-grid two">
+        {% for item in related %}
+        <a class="mini-card link-card" href="{{ url_for('package_detail', package_id=item.id) }}">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.destination }} · {{ item.category }}</p>
+          <strong>{{ item.price|currency }}</strong>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <aside class="detail-side">
+    <div class="panel sticky-panel">
+      <h2>Book this package</h2>
+      <form method="POST" id="bookingForm">
+        <input type="hidden" name="package_id" value="{{ package.id }}">
+        <div class="form-group">
+          <label>Travel Date</label>
+          <input type="date" name="travel_date" min="{{ min_date }}" required>
+        </div>
+        <div class="form-group">
+          <label>Number of Travelers</label>
+          <input type="number" name="travelers" id="travelers" min="1" max="20" value="1" required>
+        </div>
+        <div class="form-group">
+          <label>Transport Choice</label>
+          <select name="transport_choice" id="transport_choice">
+            <option>Bus</option>
+            <option selected>{{ package.transport }}</option>
+            <option>Tourist Bus</option>
+            <option>Jeep</option>
+            <option>Flight</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Hotel Choice</label>
+          <select name="hotel_choice" id="hotel_choice">
+            <option>Standard</option>
+            <option selected>{{ package.hotel_type }}</option>
+            <option>Deluxe</option>
+            <option>Resort</option>
+            <option>Tea House</option>
+            <option>Homestay</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Meal Plan</label>
+          <select name="meal_plan" id="meal_plan">
+            <option>Breakfast</option>
+            <option>Half Board</option>
+            <option>Full Board</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Special Request</label>
+          <textarea name="special_request" rows="3" placeholder="Optional note for your trip"></textarea>
+        </div>
+
+        <div class="estimate-box">
+          <h4>Estimated Cost</h4>
+          <div class="estimate-row"><span>Package</span><strong id="packageSub">Rs. 0</strong></div>
+          <div class="estimate-row"><span>Transport</span><strong id="transportTotal">Rs. 0</strong></div>
+          <div class="estimate-row"><span>Hotel</span><strong id="hotelTotal">Rs. 0</strong></div>
+          <div class="estimate-row"><span>Meals</span><strong id="mealTotal">Rs. 0</strong></div>
+          <div class="estimate-row discount"><span>Discount</span><strong id="discountTotal">Rs. 0</strong></div>
+          <div class="estimate-row total"><span>Total</span><strong id="finalTotal">Rs. 0</strong></div>
+        </div>
+
+        {% if session.get('user_id') and session.get('role') != 'admin' %}
+          <button type="submit" class="btn btn-dark full">Continue to Payment</button>
+        {% else %}
+          <a href="{{ url_for('login') }}" class="btn btn-dark full">Login to Book</a>
+        {% endif %}
+      </form>
+    </div>
+  </aside>
+</section>
+
+<script>
+window.tourCostConfig = {
+  basePrice: {{ package.price }},
+  days: {{ package.days }}
+};
+</script>
+{% endblock %}

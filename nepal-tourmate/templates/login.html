@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<section class="auth-section">
+  <div class="auth-card split">
+    <div class="auth-visual travel-visual">
+      <h2>Welcome back</h2>
+      <p>Login to manage your bookings, payments and recommendations.</p>
+    </div>
+    <div class="auth-form">
+      <h1>Login</h1>
+      <form method="POST">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" name="password" required>
+        </div>
+        <button class="btn btn-dark full" type="submit">Login</button>
+      </form>
+      <p class="muted-line">Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+    </div>
+  </div>
+</section>
+{% endblock %}
